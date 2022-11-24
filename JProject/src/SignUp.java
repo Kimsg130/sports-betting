@@ -4,15 +4,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.awt.Color;
 import javax.swing.JOptionPane;
 
 
@@ -22,12 +14,16 @@ import javax.swing.JOptionPane;
  * @author 이대준
  */
 public class SignUp extends javax.swing.JFrame {
-
+    DB_MAN DBM = new DB_MAN();
+    boolean id_is_overlap = true;
+    //todo: 가입할때 date받기(user테이블에 date속성 추가)
+    //todo: 프로필사진도 받기(user테이블에 profile속성 추가)
     /**
      * Creates new form MainFrame
      */
     public SignUp() {
         initComponents();
+        lblEnable.setVisible(false);
     }
 
     /**
@@ -60,10 +56,11 @@ public class SignUp extends javax.swing.JFrame {
         lblId = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
         txtPw = new javax.swing.JTextField();
-        txtPws = new javax.swing.JTextField();
+        txtPwcheck = new javax.swing.JTextField();
         txtName = new javax.swing.JTextField();
-        btnId = new javax.swing.JButton();
-        btnSet = new javax.swing.JButton();
+        btnOverlap = new javax.swing.JButton();
+        btnSignup = new javax.swing.JButton();
+        lblEnable = new javax.swing.JLabel();
 
         jLabel6.setText("적중금액");
 
@@ -177,6 +174,7 @@ public class SignUp extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setSize(new java.awt.Dimension(230, 23));
 
         jLabel1.setText("회원 가입");
 
@@ -188,19 +186,43 @@ public class SignUp extends javax.swing.JFrame {
 
         lblId.setText("아이디");
 
-        btnId.setText("중복 확인");
-        btnId.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnIdActionPerformed(evt);
+        txtId.setMinimumSize(new java.awt.Dimension(138, 23));
+        txtId.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                txtIdInputMethodTextChanged(evt);
+            }
+        });
+        txtId.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                txtIdPropertyChange(evt);
+            }
+        });
+        txtId.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtIdKeyPressed(evt);
             }
         });
 
-        btnSet.setText("회원 가입");
-        btnSet.addActionListener(new java.awt.event.ActionListener() {
+        btnOverlap.setText("중복 확인");
+        btnOverlap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSetActionPerformed(evt);
+                btnOverlapActionPerformed(evt);
             }
         });
+
+        btnSignup.setText("회원 가입");
+        btnSignup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSignupActionPerformed(evt);
+            }
+        });
+
+        lblEnable.setFont(new java.awt.Font("맑은 고딕", 0, 10)); // NOI18N
+        lblEnable.setForeground(new java.awt.Color(255, 0, 51));
+        lblEnable.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblEnable.setText("이미 존재하는 아이디입니다;;");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -209,123 +231,119 @@ public class SignUp extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(146, 146, 146)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblName)
-                                .addGap(76, 76, 76)
-                                .addComponent(txtName))
-                            .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(btnSignup)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lblPw)
-                                    .addComponent(lblId, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(42, 42, 42)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtPw, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblPws)
-                                .addGap(28, 28, 28)
-                                .addComponent(txtPws, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnId, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnSet)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(163, 163, 163)
-                        .addComponent(jLabel1)))
-                .addContainerGap(28, Short.MAX_VALUE))
+                                    .addComponent(lblId, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblPws)
+                                    .addComponent(lblName))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(lblEnable, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtPw, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtPwcheck, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtId, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(btnOverlap)))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
+                .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnId)
+                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnOverlap)
                     .addComponent(lblId))
+                .addGap(2, 2, 2)
+                .addComponent(lblEnable)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblPw)
+                    .addComponent(txtPw, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblPw)
-                    .addComponent(txtPw, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblPws)
-                    .addComponent(txtPws, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPwcheck, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblName)
-                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
-                .addComponent(btnSet)
+                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
+                .addComponent(btnSignup)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIdActionPerformed
-        String fileName = "C:\\java result\\meber.txt";
+    private void btnOverlapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOverlapActionPerformed
+        id_is_overlap = true;
+        String checkingid = txtId.getText().trim();
+        String strSQL = "Select * From user Where user_id = '"+checkingid+"';";
         
-        File f = new File(fileName);
-            FileReader fr;
         try{
-            fr = new FileReader(f);
-            BufferedReader br1 = new BufferedReader(fr);
-            
-            String str = null;
-            while(str == null){
-                str = br1.readLine();
-                String[] strArr = str.split("\\s");
-                
-                if(txtId.getText() == null? strArr[0] != null : !txtId.getText().equals(strArr[0])){
-                    JOptionPane.showMessageDialog(null, "사용가능한 아이디입니다.");
-                }else{
-                    JOptionPane.showMessageDialog(null, "아이디가 존재합니다. 다시 입력해주세요.");
-                }
+            DBM.dbOpen();
+            DBM.DB_rs = DBM.DB_stmt.executeQuery(strSQL);
+            if(DBM.DB_rs.next()){
+                lblEnable.setForeground(Color.red);
+                lblEnable.setText("이미 존재하는 아이디입니다;;");
+            }else if(checkingid.isEmpty()){
+                lblEnable.setForeground(Color.red);
+                lblEnable.setText("아이디를 입력해주십시오...");
+            }else{
+                lblEnable.setForeground(Color.BLUE);
+                lblEnable.setText("사용가능한 아이디 입니다!");
+                id_is_overlap = false;
             }
-        }catch(FileNotFoundException ex){
-            JOptionPane.showMessageDialog(null, "사용 가능한 아이디입니다.");
-        }catch(IOException ex){
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_btnIdActionPerformed
-    private void fileWrite(String txt){
-        String fileName = "C:\\java result\\meber.txt";
-        
-        try{
-            BufferedWriter fw = new BufferedWriter(new FileWriter(fileName, true));
-            
-            fw.write(txt);
-            fw.newLine();
-            fw.flush();
-            
-            fw.close();
+            lblEnable.setVisible(true);
         }catch(Exception e){
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "사용 가능한 아이디입니다.");
         }
-    }
+    }//GEN-LAST:event_btnOverlapActionPerformed
     
-    private void btnSetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSetActionPerformed
-        String data = null;
-
-        data = txtId.getText();
-        if(txtPw.getText() == null ? txtPws.getText() != null : !txtPw.getText().equals(txtPws.getText())){
-            JOptionPane.showMessageDialog(null, "비밀번호가 일치하지 않습니다.");
-            txtPw.setText("");
-            txtPws.setText("");
-        }else{
-            data += " " + txtPw.getText();
-            
-            data += " " + txtName.getText();
-            
-            fileWrite(data);
+    private void btnSignupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignupActionPerformed
+        String user_id = txtId.getText().trim();
+        String user_pw = txtPw.getText().trim();
+        String user_pwcheck = txtPwcheck.getText().trim();
+        String user_name = txtName.getText().trim();
+        
+        String strSQL = "Insert Into user Values(";
+        strSQL += "'"+user_id+"',";
+        strSQL += "'"+user_pw+"',";
+        strSQL += "'"+user_name+"');";
+        
+        if(id_is_overlap){
+            JOptionPane.showMessageDialog(null, "중복확인을 해주세요.");
+            return;
+        }
+        if(!user_pw.trim().equals(user_pwcheck)){
+            JOptionPane.showMessageDialog(null, "비밀번호가 맞지 않습니다.");
+            return;
+        }
+        if(user_pw.isEmpty() || user_pwcheck.isEmpty() || user_name.isEmpty()){
+            JOptionPane.showMessageDialog(null, "빈칸을 입력해주세요.");
+            return;
+        }
+        try {
+            DBM.dbOpen();
+            DBM.DB_stmt.executeUpdate(strSQL);
             JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다.");
-            System.exit(0);
-        }   
-    }//GEN-LAST:event_btnSetActionPerformed
+            DBM.dbClose();
+        } catch (Exception e) {
+            System.out.println("SQLException : "+e.getMessage());
+        }
+        //JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다.");
+    }//GEN-LAST:event_btnSignupActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
@@ -338,6 +356,19 @@ public class SignUp extends javax.swing.JFrame {
     private void btnLoseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoseActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnLoseActionPerformed
+
+    private void txtIdInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_txtIdInputMethodTextChanged
+
+    }//GEN-LAST:event_txtIdInputMethodTextChanged
+
+    private void txtIdPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txtIdPropertyChange
+
+    }//GEN-LAST:event_txtIdPropertyChange
+
+    private void txtIdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdKeyPressed
+        lblEnable.setVisible(false);
+        id_is_overlap = true;
+    }//GEN-LAST:event_txtIdKeyPressed
 
     /**
      * @param args the command line arguments
@@ -369,16 +400,17 @@ public class SignUp extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainFrame().setVisible(true);
+//                new MainFrame().setVisible(true);
+                new SignUp().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton btnDraw;
-    private javax.swing.JButton btnId;
     private javax.swing.JRadioButton btnLose;
-    private javax.swing.JButton btnSet;
+    private javax.swing.JButton btnOverlap;
+    private javax.swing.JButton btnSignup;
     private javax.swing.JRadioButton btnWin;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
@@ -392,6 +424,7 @@ public class SignUp extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel lblEnable;
     private javax.swing.JLabel lblId;
     private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblPw;
@@ -399,6 +432,6 @@ public class SignUp extends javax.swing.JFrame {
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtName;
     private javax.swing.JTextField txtPw;
-    private javax.swing.JTextField txtPws;
+    private javax.swing.JTextField txtPwcheck;
     // End of variables declaration//GEN-END:variables
 }

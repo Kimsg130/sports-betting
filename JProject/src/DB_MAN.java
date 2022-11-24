@@ -31,7 +31,6 @@ public class DB_MAN {
     public void dbOpen() throws IOException{
         try {
             Class.forName(strDriver);
-//            strURL += "encrypt=true;trustServerCertificate=true;";
             DB_con = DriverManager.getConnection(strURL, strUser, strPWD);
             DB_stmt = DB_con.createStatement();
         } catch (Exception e) {
