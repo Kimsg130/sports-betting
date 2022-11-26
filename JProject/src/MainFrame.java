@@ -14,13 +14,29 @@ public class MainFrame extends javax.swing.JFrame {
 
     DB_MAN DBM = new DB_MAN();
     String strSQL = "Select * From game_schedule";
-
+    String user_id="";
+    
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
         initComponents();
         MainFrame.super.getContentPane().setBackground(Color.WHITE);
+        try {
+            String strData = null;
+            DBM.dbOpen();
+            getDBData(strSQL);
+            DBM.dbClose();
+        } catch (Exception e) {
+            System.out.println("SQLException : " + e.getMessage());
+        }
+    }
+    //상규 : 위에 MainFrame()생성자에 추가한거 있으면 밑에 생성자에도 추가해줘!
+    public MainFrame(String user_id, String user_name){
+        initComponents();
+        MainFrame.super.getContentPane().setBackground(Color.WHITE);
+        this.user_id = user_id;
+        lblUser.setText(user_name+"님");
         try {
             String strData = null;
             DBM.dbOpen();
@@ -50,6 +66,7 @@ public class MainFrame extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        lblUser = new javax.swing.JLabel();
 
         jDialog1.setModal(true);
         jDialog1.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -127,17 +144,23 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(207, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblUser, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(75, 75, 75)
+                .addContainerGap()
+                .addComponent(lblUser)
+                .addGap(52, 52, 52)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(106, Short.MAX_VALUE))
+                .addContainerGap(123, Short.MAX_VALUE))
         );
 
         pack();
@@ -238,5 +261,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel lblUser;
     // End of variables declaration//GEN-END:variables
 }

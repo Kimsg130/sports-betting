@@ -26,8 +26,6 @@ public class SignUp extends javax.swing.JFrame {
     boolean id_is_overlap = true;
     FileFilter filter = new FileNameExtensionFilter("JPEG file", "jpg", "jpeg");
     
-    //todo: 가입할때 date받기(user테이블에 date속성 추가)
-    //todo: 프로필사진도 받기(user테이블에 profile속성 추가)
     /**
      * Creates new form MainFrame
      */
@@ -69,10 +67,17 @@ public class SignUp extends javax.swing.JFrame {
         btnX = new javax.swing.JButton();
         lblImagename = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("회원가입");
         setBackground(new java.awt.Color(255, 255, 255));
+        setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
         setResizable(false);
         setSize(new java.awt.Dimension(230, 23));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("맑은 고딕", 1, 18)); // NOI18N
         jLabel1.setText("회원 가입");
@@ -316,6 +321,7 @@ public class SignUp extends javax.swing.JFrame {
             DBM.DB_stmt.executeUpdate(strSQL);
             JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다.");
             DBM.dbClose();
+            super.dispose();
         } catch (Exception e) {
             System.out.println("SQLException : "+e.getMessage());
         }
@@ -356,6 +362,10 @@ public class SignUp extends javax.swing.JFrame {
         lblImagepath.setText("");
         lblImagename.setText("");
     }//GEN-LAST:event_btnXActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        
+    }//GEN-LAST:event_formWindowClosed
 
     /**
      * @param args the command line arguments
