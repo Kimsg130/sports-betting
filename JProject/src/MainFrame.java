@@ -13,9 +13,9 @@ import java.awt.event.KeyEvent;
 public class MainFrame extends javax.swing.JFrame {
 
     DB_MAN DBM = new DB_MAN();
-    String strSQL = "Select * From game_schedule";
-    String user_id="";
-    
+    String strSQL = "Select * From games";
+    String user_id = "";
+
     /**
      * Creates new form MainFrame
      */
@@ -31,12 +31,13 @@ public class MainFrame extends javax.swing.JFrame {
             System.out.println("SQLException : " + e.getMessage());
         }
     }
+
     //상규 : 위에 MainFrame()생성자에 추가한거 있으면 밑에 생성자에도 추가해줘!
-    public MainFrame(String user_id, String user_name){
+    public MainFrame(String user_id, String user_name) {
         initComponents();
         MainFrame.super.getContentPane().setBackground(Color.WHITE);
         this.user_id = user_id;
-        lblUser.setText(user_name+"님");
+        lblUser.setText(user_name + "님");
         try {
             String strData = null;
             DBM.dbOpen();
@@ -60,9 +61,16 @@ public class MainFrame extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtGameNum = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         btnBet = new javax.swing.JButton();
+        jDialog2 = new javax.swing.JDialog();
+        lblHome = new javax.swing.JLabel();
+        lblAway = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        btnWin = new javax.swing.JButton();
+        btnDraw = new javax.swing.JButton();
+        btnLose = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -82,20 +90,20 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel1.setText("오늘의 경기");
         jDialog1.getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 10, 70, -1));
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        txtGameNum.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                txtGameNumActionPerformed(evt);
             }
         });
-        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtGameNum.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                jTextField1KeyPressed(evt);
+                txtGameNumKeyPressed(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTextField1KeyTyped(evt);
+                txtGameNumKeyTyped(evt);
             }
         });
-        jDialog1.getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 40, 40, -1));
+        jDialog1.getContentPane().add(txtGameNum, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 40, 40, -1));
 
         jLabel2.setFont(new java.awt.Font("휴먼엑스포", 0, 12)); // NOI18N
         jLabel2.setText("경기 번호 :");
@@ -103,7 +111,65 @@ public class MainFrame extends javax.swing.JFrame {
 
         btnBet.setFont(new java.awt.Font("휴먼모음T", 0, 14)); // NOI18N
         btnBet.setText("배팅");
+        btnBet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBetActionPerformed(evt);
+            }
+        });
         jDialog1.getContentPane().add(btnBet, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 80, -1, 30));
+
+        lblHome.setText("jLabel3");
+
+        lblAway.setText("jLabel4");
+
+        jLabel5.setText("VS");
+
+        btnWin.setText("승");
+
+        btnDraw.setText("무");
+
+        btnLose.setText("패");
+
+        javax.swing.GroupLayout jDialog2Layout = new javax.swing.GroupLayout(jDialog2.getContentPane());
+        jDialog2.getContentPane().setLayout(jDialog2Layout);
+        jDialog2Layout.setHorizontalGroup(
+            jDialog2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDialog2Layout.createSequentialGroup()
+                .addGroup(jDialog2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jDialog2Layout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addComponent(btnWin, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
+                        .addGap(34, 34, 34)
+                        .addComponent(btnDraw, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29))
+                    .addGroup(jDialog2Layout.createSequentialGroup()
+                        .addGap(66, 66, 66)
+                        .addComponent(lblHome)
+                        .addGap(73, 73, 73)
+                        .addComponent(jLabel5)
+                        .addGap(33, 33, 33)))
+                .addGroup(jDialog2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnLose, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jDialog2Layout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addComponent(lblAway)))
+                .addContainerGap(58, Short.MAX_VALUE))
+        );
+        jDialog2Layout.setVerticalGroup(
+            jDialog2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDialog2Layout.createSequentialGroup()
+                .addGap(46, 46, 46)
+                .addGroup(jDialog2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblHome)
+                    .addComponent(lblAway)
+                    .addComponent(jLabel5))
+                .addGap(61, 61, 61)
+                .addGroup(jDialog2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnWin, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDraw, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnLose, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(44, Short.MAX_VALUE))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -177,19 +243,49 @@ public class MainFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txtGameNumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGameNumActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txtGameNumActionPerformed
 
-    private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
+    private void txtGameNumKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtGameNumKeyPressed
 
-    }//GEN-LAST:event_jTextField1KeyPressed
+    }//GEN-LAST:event_txtGameNumKeyPressed
 
-    private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
+    private void txtGameNumKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtGameNumKeyTyped
         if (evt.getKeyChar() == KeyEvent.VK_ENTER) {
             //TODO 
         }
-    }//GEN-LAST:event_jTextField1KeyTyped
+    }//GEN-LAST:event_txtGameNumKeyTyped
+
+    private void btnBetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBetActionPerformed
+        // TODO add your handling code here:
+        jDialog1.dispose();
+        strSQL += " WHERE G_No = '" + txtGameNum.getText() + "'";
+
+        try {
+            DBM.dbOpen();
+            DBM.DB_rs = DBM.DB_stmt.executeQuery(strSQL);
+
+            while (DBM.DB_rs.next()) {
+                String strHome = DBM.DB_rs.getString("home_team");
+                String strAway = DBM.DB_rs.getString("away_team");
+                lblHome.setText(strHome);
+                lblAway.setText(strAway);
+                
+                String strWinOdds = DBM.DB_rs.getString("win_odds");
+                String strDrawOdds = DBM.DB_rs.getString("draw_odds");
+                String strLoseOdds = DBM.DB_rs.getString("lose_odds");
+                btnWin.setText(btnWin.getText()+"\n"+strWinOdds);
+                btnDraw.setText(btnDraw.getText()+"\n"+strDrawOdds);
+                btnLose.setText(btnLose.getText()+"\n"+strLoseOdds);
+            }
+            DBM.DB_rs.close();
+        } catch (Exception e) {
+            System.out.println("SQLException : " + e.getMessage());
+        }
+        jDialog2.setSize(382, 300);
+        jDialog2.setVisible(true);
+    }//GEN-LAST:event_btnBetActionPerformed
 
     public final void getDBData(String strQuery) {
         String strOutput = "고유번호\t홈팀\t원정팀\t경기일정\n";
@@ -199,11 +295,11 @@ public class MainFrame extends javax.swing.JFrame {
             DBM.DB_rs = DBM.DB_stmt.executeQuery(strQuery);
             while (DBM.DB_rs.next()) {
                 strOutput = "\n";
-                strOutput += DBM.DB_rs.getString("num") + "\t";
-                strOutput += DBM.DB_rs.getString("team1") + "\t";
-                strOutput += DBM.DB_rs.getString("team2") + "\t";
-                strOutput += DBM.DB_rs.getDate("date") + "\t";
-        
+                strOutput += DBM.DB_rs.getString("G_no") + "\t";
+                strOutput += DBM.DB_rs.getString("home_team") + "\t";
+                strOutput += DBM.DB_rs.getString("away_team") + "\t";
+                strOutput += DBM.DB_rs.getDate("game_date") + "\t";
+
                 jTextArea1.append(strOutput);
             }
             DBM.DB_rs.close();
@@ -252,15 +348,22 @@ public class MainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBet;
+    private javax.swing.JButton btnDraw;
+    private javax.swing.JButton btnLose;
+    private javax.swing.JButton btnWin;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JDialog jDialog1;
+    private javax.swing.JDialog jDialog2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel lblAway;
+    private javax.swing.JLabel lblHome;
     private javax.swing.JLabel lblUser;
+    private javax.swing.JTextField txtGameNum;
     // End of variables declaration//GEN-END:variables
 }
