@@ -183,19 +183,19 @@ public class Schedule extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSearchActionPerformed
     
     public final void getDBData(String strQuery) {
-        String strOutput = "  고유번호\t      홈팀\t      원정팀          결과\t             경기일정\n";
+        String strOutput = "  고유번호\t  홈팀\t  원정팀\t결과\t        경기일정\n";
         txtSchedule.setText(strOutput);
 
         try {
             DBM.DB_rs = DBM.DB_stmt.executeQuery(strQuery);
             while (DBM.DB_rs.next()) {
-                strOutput = "\n";
-                strOutput += String.format("%10s", DBM.DB_rs.getString("G_no"))+"\t";
-                strOutput += String.format("%8s", DBM.DB_rs.getString("home_team"))+"\t";
-                strOutput += String.format("%8s", DBM.DB_rs.getString("away_team"))+"\t";
-                strOutput += String.format("%4s", DBM.DB_rs.getString("result"))+"\t";
-                strOutput += String.format("%21s", DBM.DB_rs.getString("game_date"));
-
+                strOutput = "\n   ";
+                strOutput += DBM.DB_rs.getString("G_no")+"\t|";
+                strOutput += DBM.DB_rs.getString("home_team")+"\t";
+                strOutput += DBM.DB_rs.getString("away_team")+"\t";
+                strOutput += "| "+DBM.DB_rs.getString("result")+"\t|";
+                strOutput += DBM.DB_rs.getString("game_date")+"|";
+               
                 txtSchedule.append(strOutput);
             }
             DBM.DB_rs.close();
