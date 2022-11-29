@@ -1,6 +1,8 @@
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
+import java.time.LocalDate;
+import java.util.Date;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -84,11 +86,11 @@ public class MainFrame extends javax.swing.JFrame {
         jTextArea1.setText("고유번호  홈팀  원정팀  결과  경기일");
         jScrollPane1.setViewportView(jTextArea1);
 
-        jDialog1.getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 270, 170));
+        jDialog1.getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 370, 240));
 
         jLabel1.setFont(new java.awt.Font("휴먼엑스포", 0, 12)); // NOI18N
         jLabel1.setText("오늘의 경기");
-        jDialog1.getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 10, 70, -1));
+        jDialog1.getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 10, 70, -1));
 
         txtGameNum.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -103,20 +105,20 @@ public class MainFrame extends javax.swing.JFrame {
                 txtGameNumKeyTyped(evt);
             }
         });
-        jDialog1.getContentPane().add(txtGameNum, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 40, 40, -1));
+        jDialog1.getContentPane().add(txtGameNum, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 80, 40, 30));
 
         jLabel2.setFont(new java.awt.Font("휴먼엑스포", 0, 12)); // NOI18N
         jLabel2.setText("경기 번호 :");
-        jDialog1.getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 40, -1, 20));
+        jDialog1.getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 80, -1, 30));
 
-        btnBet.setFont(new java.awt.Font("휴먼모음T", 0, 14)); // NOI18N
-        btnBet.setText("배팅");
+        btnBet.setFont(new java.awt.Font("휴먼엑스포", 0, 14)); // NOI18N
+        btnBet.setText("선택");
         btnBet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBetActionPerformed(evt);
             }
         });
-        jDialog1.getContentPane().add(btnBet, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 80, -1, 30));
+        jDialog1.getContentPane().add(btnBet, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 80, -1, 30));
 
         lblHome.setText("jLabel3");
 
@@ -238,7 +240,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        jDialog1.setSize(305, 340);
+        jDialog1.setSize(430, 430);
         jDialog1.setVisible(true);
 
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -290,7 +292,7 @@ public class MainFrame extends javax.swing.JFrame {
     public final void getDBData(String strQuery) {
         String strOutput = "고유번호\t홈팀\t원정팀\t경기일정\n";
         jTextArea1.setText(strOutput);
-
+        strQuery += " WHERE DATE_FORMAT(game_date, '%Y-%m-%d') = '"+LocalDate.now().toString()+"'";
         try {
             DBM.DB_rs = DBM.DB_stmt.executeQuery(strQuery);
             while (DBM.DB_rs.next()) {

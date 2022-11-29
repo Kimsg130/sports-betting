@@ -17,7 +17,7 @@
           </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="10" y="120" width="270" height="170"/>
+              <AbsoluteConstraints x="20" y="120" width="370" height="240"/>
             </Constraint>
           </Constraints>
 
@@ -41,7 +41,7 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="110" y="10" width="70" height="-1"/>
+              <AbsoluteConstraints x="160" y="10" width="70" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -53,7 +53,7 @@
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="150" y="40" width="40" height="-1"/>
+              <AbsoluteConstraints x="270" y="80" width="40" height="30"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -66,23 +66,23 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="80" y="40" width="-1" height="20"/>
+              <AbsoluteConstraints x="200" y="80" width="-1" height="30"/>
             </Constraint>
           </Constraints>
         </Component>
         <Component class="javax.swing.JButton" name="btnBet">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="&#xd734;&#xba3c;&#xbaa8;&#xc74c;T" size="14" style="0"/>
+              <Font name="&#xd734;&#xba3c;&#xc5d1;&#xc2a4;&#xd3ec;" size="14" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="&#xbc30;&#xd305;"/>
+            <Property name="text" type="java.lang.String" value="&#xc120;&#xd0dd;"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBetActionPerformed"/>
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="110" y="80" width="-1" height="30"/>
+              <AbsoluteConstraints x="320" y="80" width="-1" height="30"/>
             </Constraint>
           </Constraints>
         </Component>
