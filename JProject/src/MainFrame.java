@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.time.LocalDate;
 import java.util.Date;
+import javax.swing.JOptionPane;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -23,6 +24,7 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
+        
         MainFrame.super.getContentPane().setBackground(Color.WHITE);
         try {
             String strData = null;
@@ -402,7 +404,7 @@ public class MainFrame extends javax.swing.JFrame {
                 DBM.dbOpen();
                 DBM.DB_stmt.executeUpdate(strSQL);
                 DBM.dbClose();
-                jDialog2.dispose();
+                JOptionPane.showMessageDialog(null,txtBetPoint.getText()+"원 배팅하셨습니다.");
             } catch (Exception e) {
                 System.out.println("SQLException : " + e.getMessage());
             }
