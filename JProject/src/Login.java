@@ -163,7 +163,9 @@ public class Login extends javax.swing.JFrame {
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         String insertId = txtId.getText().trim();
         String insertPw = txtPw.getText().trim();
+        String user_name = "기본유저";
         String strSQL = "Select * From user;";
+        String strSQL_name = "Select user_name From user_info Where user_id = ";
         lblId.setVisible(false);
         lblPw.setVisible(false);
         
@@ -179,8 +181,13 @@ public class Login extends javax.swing.JFrame {
                 
                 if(insertId.equals(searchId)){
                     if(insertPw.equals(searchPw)){
-                        JOptionPane.showMessageDialog(null, "환영합니다. "+DBM.DB_rs.getString(3)+"님!");
-                        new MainFrame(searchId,DBM.DB_rs.getString("user_name")).setVisible(true);
+                        strSQL_name += "'"+searchId+"';";
+                        DBM.DB_rs = DBM.DB_stmt.executeQuery(strSQL_name);
+                        while(DBM.DB_rs.next()){
+                            user_name = DBM.DB_rs.getString("user_name");
+                        }
+                        JOptionPane.showMessageDialog(null, "환영합니다. "+user_name+"님!");
+                        new MainFrame(searchId,user_name).setVisible(true);
                         super.dispose();
                     }else{
                         lblPw.setVisible(true);

@@ -283,8 +283,15 @@ public class SignUp extends javax.swing.JFrame {
         file = new File(realpath);
         newFile = new File(relativepath+filename);
         
+        String strSQL_user = "Insert Into user Values(";
+        strSQL_user += "'"+user_id+"',";
+        strSQL_user += "'"+user_pw+"');";
+        String strSQL_ui;
+        
         if(realpath.isEmpty()){
-            user_profile = relativepath+"default_profile.jpg";
+            strSQL_ui = "Insert Into user_info(user_id, user_name) Values( ";
+            strSQL_ui += "'"+user_id+"',";
+            strSQL_ui += "'"+user_name+"');";
         }else{
             try {
                 Files.copy(file.toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
@@ -292,16 +299,20 @@ public class SignUp extends javax.swing.JFrame {
                 System.out.println("IOException : "+e);
             }
             user_profile = relativepath + filename;
+            strSQL_ui = "Insert Into user_info(user_id, user_name, user_profile) Values( ";
+            strSQL_ui += "'"+user_id+"',";
+            strSQL_ui += "'"+user_name+"',";
+            strSQL_ui += "'"+user_profile+"');";
         }
         
-        
-        String strSQL = "Insert Into user Values(";
-        strSQL += "'"+user_id+"',";
-        strSQL += "'"+user_pw+"',";
-        strSQL += "'"+user_name+"',";
-        strSQL += "'"+user_profile+"',";
-        strSQL += "sysdate());";
-        
+//        
+//        String strSQL = "Insert Into user Values(";
+//        strSQL += "'"+user_id+"',";
+//        strSQL += "'"+user_pw+"',";
+//        strSQL += "'"+user_name+"',";
+//        strSQL += "'"+user_profile+"',";
+//        strSQL += "sysdate());";
+//        
         
          
         if(id_is_overlap){
@@ -319,7 +330,8 @@ public class SignUp extends javax.swing.JFrame {
         
         try {
             DBM.dbOpen();
-            DBM.DB_stmt.executeUpdate(strSQL);
+            DBM.DB_stmt.executeUpdate(strSQL_user);
+            DBM.DB_stmt.execute(strSQL_ui);
             JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다.");
             DBM.dbClose();
             super.dispose();
