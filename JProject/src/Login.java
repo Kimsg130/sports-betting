@@ -186,8 +186,13 @@ public class Login extends javax.swing.JFrame {
                             user_name = DBM.DB_rs.getString("user_name");
                         }
                         //어드민일때 / 아닐때 나누기
-                        JOptionPane.showMessageDialog(null, "환영합니다. "+user_name+"님!");
-                        new MainFrame(searchId,user_name).setVisible(true);
+                        if(searchId.equals("admin")){
+                            JOptionPane.showMessageDialog(null, "Admin페이지로 이동합니다.");
+                            new AdminFrame().setVisible(true);
+                        }else{
+                            JOptionPane.showMessageDialog(null, "환영합니다. "+user_name+"님!");
+                            new MainFrame(searchId,user_name).setVisible(true);
+                        }
                         super.dispose();
                     }else{
                         lblPw.setVisible(true);
