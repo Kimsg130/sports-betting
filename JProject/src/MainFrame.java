@@ -24,7 +24,7 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
-        
+
         MainFrame.super.getContentPane().setBackground(Color.WHITE);
         try {
             String strData = null;
@@ -34,6 +34,7 @@ public class MainFrame extends javax.swing.JFrame {
         } catch (Exception e) {
             System.out.println("SQLException : " + e.getMessage());
         }
+
     }
 
     //상규 : 위에 MainFrame()생성자에 추가한거 있으면 밑에 생성자에도 추가해줘!
@@ -80,7 +81,11 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         lblUserPoint = new javax.swing.JLabel();
         jDialog3 = new javax.swing.JDialog();
-        jLabel6 = new javax.swing.JLabel();
+        lblShowPoint = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        btnCharge = new javax.swing.JButton();
+        txtChargePoint = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -146,8 +151,18 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         btnDraw.setText("무");
+        btnDraw.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDrawActionPerformed(evt);
+            }
+        });
 
         btnLose.setText("패");
+        btnLose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoseActionPerformed(evt);
+            }
+        });
 
         txtBetPoint.setText("0");
         txtBetPoint.addActionListener(new java.awt.event.ActionListener() {
@@ -220,23 +235,53 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
-        jLabel6.setText("포인트 충전 모달");
+        jDialog3.setModal(true);
+
+        lblShowPoint.setText("0");
+
+        jLabel10.setText("보유 포인트");
+
+        btnCharge.setText("충전하기");
+        btnCharge.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChargeActionPerformed(evt);
+            }
+        });
+
+        txtChargePoint.setText("0");
 
         javax.swing.GroupLayout jDialog3Layout = new javax.swing.GroupLayout(jDialog3.getContentPane());
         jDialog3.getContentPane().setLayout(jDialog3Layout);
         jDialog3Layout.setHorizontalGroup(
             jDialog3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDialog3Layout.createSequentialGroup()
-                .addContainerGap(141, Short.MAX_VALUE)
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(136, 136, 136))
+            .addGroup(jDialog3Layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addGroup(jDialog3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jDialog3Layout.createSequentialGroup()
+                        .addComponent(txtChargePoint, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnCharge, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jDialog3Layout.createSequentialGroup()
+                        .addComponent(jLabel11)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblShowPoint, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
         jDialog3Layout.setVerticalGroup(
             jDialog3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jDialog3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel6)
-                .addContainerGap(277, Short.MAX_VALUE))
+                .addGap(15, 15, 15)
+                .addGroup(jDialog3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(lblShowPoint, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11))
+                .addGap(18, 18, 18)
+                .addGroup(jDialog3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCharge)
+                    .addComponent(txtChargePoint, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -277,7 +322,12 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/me/myimageapp/javaimg2.jpg"))); // NOI18N
 
         jButton4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jButton4.setText("Porint");
+        jButton4.setText("Point");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -411,10 +461,94 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_txtBetPointActionPerformed
 
     private void btnWinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWinActionPerformed
-        // TODO add your handling code here:
+        betting("승");
+    }//GEN-LAST:event_btnWinActionPerformed
+
+    private void btnChargeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChargeActionPerformed
+        int ChargePoint = Integer.parseInt(lblShowPoint.getText()) + Integer.parseInt(txtChargePoint.getText());
+        String strSQL2 = "Update user_info Set ";
+        strSQL2 += "point = '" + ChargePoint + "'";
+        strSQL2 += " WHERE user_id ='" + user_id + "'";
+        try {
+            DBM.dbOpen();
+            DBM.DB_stmt.executeUpdate(strSQL2);
+            DBM.dbClose();
+            JOptionPane.showMessageDialog(null, txtChargePoint.getText() + "원 충전하셨습니다.");
+        } catch (Exception e) {
+            System.out.println("SQLException : " + e.getMessage());
+        }
+    }//GEN-LAST:event_btnChargeActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        //포인트 충전 화면
+        txtChargePoint.setText("0");
+        String strSQL2 = "SELECT point FROM user_info where user_id = '" + user_id + "'";
+        try {
+            DBM.dbOpen();
+            DBM.DB_rs = DBM.DB_stmt.executeQuery(strSQL2);
+
+            while (DBM.DB_rs.next()) {
+                String point = DBM.DB_rs.getString("point");
+                lblShowPoint.setText(point);
+            }
+            DBM.DB_rs.close();
+        } catch (Exception e) {
+            System.out.println("SQLException : " + e.getMessage());
+        }
+        jDialog3.setSize(300, 300);
+        jDialog3.setVisible(true);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void btnDrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDrawActionPerformed
+        betting("무");
+    }//GEN-LAST:event_btnDrawActionPerformed
+
+    private void btnLoseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoseActionPerformed
+        betting("패");
+    }//GEN-LAST:event_btnLoseActionPerformed
+
+    public final void getDBData(String strQuery) {
+        String strOutput = "고유번호\t홈팀\t원정팀\t경기일정\n";
+        jTextArea1.setText(strOutput);
+        strQuery += " WHERE DATE_FORMAT(game_date, '%Y-%m-%d') = '" + LocalDate.now().toString() + "'";
+        try {
+            DBM.DB_rs = DBM.DB_stmt.executeQuery(strQuery);
+            while (DBM.DB_rs.next()) {
+                strOutput = "\n";
+                strOutput += DBM.DB_rs.getString("G_no") + "\t";
+                strOutput += DBM.DB_rs.getString("home_team") + "\t";
+                strOutput += DBM.DB_rs.getString("away_team") + "\t";
+                strOutput += DBM.DB_rs.getDate("game_date") + "\t";
+
+                jTextArea1.append(strOutput);
+            }
+            DBM.DB_rs.close();
+        } catch (Exception e) {
+            System.out.println("SQLException : " + e.getMessage());
+        }
+    }
+
+    public void betting(String option) {
+        //배팅 메소드
         if (Integer.parseInt(txtBetPoint.getText()) > Integer.parseInt(lblUserPoint.getText())) {
-            jDialog3.setSize(300, 300);
-            jDialog3.setVisible(true);
+            int result = JOptionPane.showConfirmDialog(null, "포인트가 부족합니다. 충전하시겠습니까?", "insufficient balance", JOptionPane.YES_NO_OPTION);
+            if (result == 0) {
+                String strSQL2 = "SELECT point FROM user_info where user_id = '" + user_id + "'";
+                try {
+                    DBM.dbOpen();
+                    DBM.DB_rs = DBM.DB_stmt.executeQuery(strSQL2);
+
+                    while (DBM.DB_rs.next()) {
+                        String point = DBM.DB_rs.getString("point");
+                        lblShowPoint.setText(point);
+                    }
+                    DBM.DB_rs.close();
+                } catch (Exception e) {
+                    System.out.println("SQLException : " + e.getMessage());
+                }
+                jDialog3.setSize(300, 300);
+                jDialog3.setVisible(true);
+            }
         } else {
             //B_no + 1 로직
             String strSQL_B_no = "SELECT B_no FROM betting ORDER BY B_no DESC LIMIT 1";
@@ -437,21 +571,20 @@ public class MainFrame extends javax.swing.JFrame {
             strSQL += "'" + Integer.parseInt(txtGameNum.getText()) + "',";
             strSQL += "'" + user_id + "',";
             strSQL += "'" + Integer.parseInt(txtBetPoint.getText()) + "',";
-            strSQL += "'WIN',";
+            strSQL += "'" + option + "',";
             strSQL += "'" + LocalDate.now() + "')";
             try {
                 DBM.dbOpen();
                 DBM.DB_stmt.executeUpdate(strSQL);
                 DBM.dbClose();
-                JOptionPane.showMessageDialog(null,txtBetPoint.getText()+"원 배팅하셨습니다.");
+                JOptionPane.showMessageDialog(null, txtBetPoint.getText() + "원 배팅하셨습니다.");
             } catch (Exception e) {
                 System.out.println("SQLException : " + e.getMessage());
             }
-            
-            
+
             //디비 유저 포인트 배팅금액만큼 차감 로직
             int change = Integer.parseInt(lblUserPoint.getText()) - Integer.parseInt(txtBetPoint.getText());
-            
+
             String strSQL2 = "Update user_info Set ";
             strSQL2 += "point = '" + change + "'";
             strSQL2 += " WHERE user_id ='" + user_id + "'";
@@ -462,27 +595,6 @@ public class MainFrame extends javax.swing.JFrame {
             } catch (Exception e) {
                 System.out.println("SQLException : " + e.getMessage());
             }
-        }
-    }//GEN-LAST:event_btnWinActionPerformed
-
-    public final void getDBData(String strQuery) {
-        String strOutput = "고유번호\t홈팀\t원정팀\t경기일정\n";
-        jTextArea1.setText(strOutput);
-        strQuery += " WHERE DATE_FORMAT(game_date, '%Y-%m-%d') = '" + LocalDate.now().toString() + "'";
-        try {
-            DBM.DB_rs = DBM.DB_stmt.executeQuery(strQuery);
-            while (DBM.DB_rs.next()) {
-                strOutput = "\n";
-                strOutput += DBM.DB_rs.getString("G_no") + "\t";
-                strOutput += DBM.DB_rs.getString("home_team") + "\t";
-                strOutput += DBM.DB_rs.getString("away_team") + "\t";
-                strOutput += DBM.DB_rs.getDate("game_date") + "\t";
-
-                jTextArea1.append(strOutput);
-            }
-            DBM.DB_rs.close();
-        } catch (Exception e) {
-            System.out.println("SQLException : " + e.getMessage());
         }
     }
 
@@ -526,6 +638,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBet;
+    private javax.swing.JButton btnCharge;
     private javax.swing.JButton btnDraw;
     private javax.swing.JButton btnLose;
     private javax.swing.JButton btnWin;
@@ -537,11 +650,12 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JDialog jDialog2;
     private javax.swing.JDialog jDialog3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -549,9 +663,11 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel lblAway;
     private javax.swing.JLabel lblHome;
+    private javax.swing.JLabel lblShowPoint;
     private javax.swing.JLabel lblUser;
     private javax.swing.JLabel lblUserPoint;
     private javax.swing.JTextField txtBetPoint;
+    private javax.swing.JTextField txtChargePoint;
     private javax.swing.JTextField txtGameNum;
     // End of variables declaration//GEN-END:variables
 }
