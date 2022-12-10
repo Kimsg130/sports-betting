@@ -572,7 +572,8 @@ public class MainFrame extends javax.swing.JFrame {
             strSQL += "'" + user_id + "',";
             strSQL += "'" + Integer.parseInt(txtBetPoint.getText()) + "',";
             strSQL += "'" + option + "',";
-            strSQL += "'" + LocalDate.now() + "')";
+            strSQL += "'" + LocalDate.now() + "',";
+            strSQL += "'" + "yet" + "')";
             try {
                 DBM.dbOpen();
                 DBM.DB_stmt.executeUpdate(strSQL);
