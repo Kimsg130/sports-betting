@@ -273,10 +273,11 @@ public class MainFrame extends javax.swing.JFrame {
             jDialog3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jDialog3Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addGroup(jDialog3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(lblShowPoint, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11))
+                .addGroup(jDialog3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel11)
+                    .addGroup(jDialog3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel10)
+                        .addComponent(lblShowPoint, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jDialog3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCharge)
@@ -412,6 +413,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void btnBetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBetActionPerformed
         // TODO add your handling code here:
+        
         jDialog1.dispose();
         strSQL += " WHERE G_No = '" + txtGameNum.getText() + "'";
 
@@ -451,7 +453,6 @@ public class MainFrame extends javax.swing.JFrame {
         } catch (Exception e) {
             System.out.println("SQLException : " + e.getMessage());
         }
-
         jDialog2.setSize(382, 300);
         jDialog2.setVisible(true);
     }//GEN-LAST:event_btnBetActionPerformed
@@ -462,6 +463,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void btnWinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWinActionPerformed
         betting("승");
+        
     }//GEN-LAST:event_btnWinActionPerformed
 
     private void btnChargeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChargeActionPerformed
@@ -474,6 +476,7 @@ public class MainFrame extends javax.swing.JFrame {
             DBM.DB_stmt.executeUpdate(strSQL2);
             DBM.dbClose();
             JOptionPane.showMessageDialog(null, txtChargePoint.getText() + "원 충전하셨습니다.");
+            jDialog3.dispose();
         } catch (Exception e) {
             System.out.println("SQLException : " + e.getMessage());
         }
@@ -501,10 +504,12 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void btnDrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDrawActionPerformed
         betting("무");
+        
     }//GEN-LAST:event_btnDrawActionPerformed
 
     private void btnLoseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoseActionPerformed
         betting("패");
+        
     }//GEN-LAST:event_btnLoseActionPerformed
 
     public final void getDBData(String strQuery) {
@@ -519,7 +524,7 @@ public class MainFrame extends javax.swing.JFrame {
                 strOutput += DBM.DB_rs.getString("home_team") + "\t";
                 strOutput += DBM.DB_rs.getString("away_team") + "\t";
                 strOutput += DBM.DB_rs.getDate("game_date") + "\t";
-
+                
                 jTextArea1.append(strOutput);
             }
             DBM.DB_rs.close();
@@ -530,72 +535,78 @@ public class MainFrame extends javax.swing.JFrame {
 
     public void betting(String option) {
         //배팅 메소드
-        if (Integer.parseInt(txtBetPoint.getText()) > Integer.parseInt(lblUserPoint.getText())) {
-            int result = JOptionPane.showConfirmDialog(null, "포인트가 부족합니다. 충전하시겠습니까?", "insufficient balance", JOptionPane.YES_NO_OPTION);
-            if (result == 0) {
-                String strSQL2 = "SELECT point FROM user_info where user_id = '" + user_id + "'";
+        if (Integer.parseInt(txtBetPoint.getText()) > 0) {
+            if (Integer.parseInt(txtBetPoint.getText()) > Integer.parseInt(lblUserPoint.getText())) {
+                int result = JOptionPane.showConfirmDialog(null, "포인트가 부족합니다. 충전하시겠습니까?", "insufficient balance", JOptionPane.YES_NO_OPTION);
+                if (result == 0) {
+                    String strSQL2 = "SELECT point FROM user_info where user_id = '" + user_id + "'";
+                    try {
+                        DBM.dbOpen();
+                        DBM.DB_rs = DBM.DB_stmt.executeQuery(strSQL2);
+
+                        while (DBM.DB_rs.next()) {
+                            String point = DBM.DB_rs.getString("point");
+                            lblShowPoint.setText(point);
+                        }
+                        DBM.DB_rs.close();
+                    } catch (Exception e) {
+                        System.out.println("SQLException : " + e.getMessage());
+                    }
+                    jDialog2.dispose();
+                    jDialog3.setSize(300, 300);
+                    jDialog3.setVisible(true);
+                }
+            } else {
+                //B_no + 1 로직
+                String strSQL_B_no = "SELECT B_no FROM betting ORDER BY B_no DESC LIMIT 1";
+                int B_no = 0;
                 try {
                     DBM.dbOpen();
-                    DBM.DB_rs = DBM.DB_stmt.executeQuery(strSQL2);
+                    DBM.DB_rs = DBM.DB_stmt.executeQuery(strSQL_B_no);
 
                     while (DBM.DB_rs.next()) {
-                        String point = DBM.DB_rs.getString("point");
-                        lblShowPoint.setText(point);
+                        B_no = DBM.DB_rs.getInt("B_no") + 1;
                     }
                     DBM.DB_rs.close();
                 } catch (Exception e) {
                     System.out.println("SQLException : " + e.getMessage());
                 }
-                jDialog3.setSize(300, 300);
-                jDialog3.setVisible(true);
-            }
-        } else {
-            //B_no + 1 로직
-            String strSQL_B_no = "SELECT B_no FROM betting ORDER BY B_no DESC LIMIT 1";
-            int B_no = 0;
-            try {
-                DBM.dbOpen();
-                DBM.DB_rs = DBM.DB_stmt.executeQuery(strSQL_B_no);
 
-                while (DBM.DB_rs.next()) {
-                    B_no = DBM.DB_rs.getInt("B_no") + 1;
+                //디비에 배팅 기록 삽입 로직
+                strSQL = "Insert Into betting Values(";
+                strSQL += "'" + B_no + "',";
+                strSQL += "'" + Integer.parseInt(txtGameNum.getText()) + "',";
+                strSQL += "'" + user_id + "',";
+                strSQL += "'" + Integer.parseInt(txtBetPoint.getText()) + "',";
+                strSQL += "'" + option + "',";
+                strSQL += "'" + LocalDate.now() + "',";
+                strSQL += "'" + "yet" + "')";
+                try {
+                    DBM.dbOpen();
+                    DBM.DB_stmt.executeUpdate(strSQL);
+                    DBM.dbClose();
+                    JOptionPane.showMessageDialog(null, txtBetPoint.getText() + "원 배팅하셨습니다.");
+                } catch (Exception e) {
+                    System.out.println("SQLException : " + e.getMessage());
                 }
-                DBM.DB_rs.close();
-            } catch (Exception e) {
-                System.out.println("SQLException : " + e.getMessage());
-            }
 
-            //디비에 배팅 기록 삽입 로직
-            strSQL = "Insert Into betting Values(";
-            strSQL += "'" + B_no + "',";
-            strSQL += "'" + Integer.parseInt(txtGameNum.getText()) + "',";
-            strSQL += "'" + user_id + "',";
-            strSQL += "'" + Integer.parseInt(txtBetPoint.getText()) + "',";
-            strSQL += "'" + option + "',";
-            strSQL += "'" + LocalDate.now() + "',";
-            strSQL += "'" + "yet" + "')";
-            try {
-                DBM.dbOpen();
-                DBM.DB_stmt.executeUpdate(strSQL);
-                DBM.dbClose();
-                JOptionPane.showMessageDialog(null, txtBetPoint.getText() + "원 배팅하셨습니다.");
-            } catch (Exception e) {
-                System.out.println("SQLException : " + e.getMessage());
-            }
+                //디비 유저 포인트 배팅금액만큼 차감 로직
+                int change = Integer.parseInt(lblUserPoint.getText()) - Integer.parseInt(txtBetPoint.getText());
 
-            //디비 유저 포인트 배팅금액만큼 차감 로직
-            int change = Integer.parseInt(lblUserPoint.getText()) - Integer.parseInt(txtBetPoint.getText());
-
-            String strSQL2 = "Update user_info Set ";
-            strSQL2 += "point = '" + change + "'";
-            strSQL2 += " WHERE user_id ='" + user_id + "'";
-            try {
-                DBM.dbOpen();
-                DBM.DB_stmt.executeUpdate(strSQL2);
-                DBM.dbClose();
-            } catch (Exception e) {
-                System.out.println("SQLException : " + e.getMessage());
+                String strSQL2 = "Update user_info Set ";
+                strSQL2 += "point = '" + change + "'";
+                strSQL2 += " WHERE user_id ='" + user_id + "'";
+                try {
+                    DBM.dbOpen();
+                    DBM.DB_stmt.executeUpdate(strSQL2);
+                    DBM.dbClose();
+                } catch (Exception e) {
+                    System.out.println("SQLException : " + e.getMessage());
+                }
+                jDialog2.dispose();
             }
+        }else{
+            JOptionPane.showMessageDialog(null, "금액을 확인해주세요", "입력값 오류", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
