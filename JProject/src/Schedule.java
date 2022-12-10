@@ -1,7 +1,9 @@
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -13,7 +15,7 @@ import java.util.ArrayList;
  */
 public class Schedule extends javax.swing.JFrame {
     DB_MAN DBM = new DB_MAN();
-    String strSQL = "SELECT home_team FROM games GROUP BY home_team";
+    String strSQL = "SELECT team FROM teams ORDER BY team desc;";
     /**
      * Creates new form Schedule
      */
@@ -47,11 +49,16 @@ public class Schedule extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         comboTeam = new javax.swing.JComboBox<>();
         btnSearch = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        txtSchedule = new javax.swing.JTextArea();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        scheduleTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+        });
 
         buttonGroup1.add(radioWhole);
         radioWhole.setSelected(true);
@@ -82,14 +89,33 @@ public class Schedule extends javax.swing.JFrame {
             }
         });
 
-        txtSchedule.setEditable(false);
-        txtSchedule.setColumns(20);
-        txtSchedule.setRows(5);
-        txtSchedule.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED, new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204)));
-        txtSchedule.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        txtSchedule.setFocusable(false);
-        txtSchedule.setHighlighter(null);
-        jScrollPane1.setViewportView(txtSchedule);
+        scheduleTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "고유번호", "홈팀", "원정팀", "경기결과", "경기일정"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        scheduleTable.setCellSelectionEnabled(true);
+        scheduleTable.setGridColor(new java.awt.Color(204, 204, 204));
+        scheduleTable.setSelectionBackground(new java.awt.Color(255, 255, 255));
+        jScrollPane2.setViewportView(scheduleTable);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -99,10 +125,6 @@ public class Schedule extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 485, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(21, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(98, 98, 98)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -119,7 +141,11 @@ public class Schedule extends javax.swing.JFrame {
                         .addComponent(radioFuture)))
                 .addGap(18, 18, 18)
                 .addComponent(btnSearch)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(109, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 488, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(17, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -138,9 +164,9 @@ public class Schedule extends javax.swing.JFrame {
                             .addComponent(jLabel2)
                             .addComponent(comboTeam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         pack();
@@ -181,22 +207,54 @@ public class Schedule extends javax.swing.JFrame {
             System.out.println("SQLException(btnSearch) : "+e.getMessage());
         }
     }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        //엔터키 구현
+        if(evt.getKeyChar() == KeyEvent.VK_ENTER){
+            btnSearchActionPerformed(null);
+        }
+    }//GEN-LAST:event_formKeyPressed
+    
+//    public final void getDBData(String strQuery) {
+//        String strOutput = "  고유번호\t  홈팀\t  원정팀\t결과\t        경기일정\n";
+//        txtSchedule.setText(strOutput);
+//
+//        try {
+//            DBM.DB_rs = DBM.DB_stmt.executeQuery(strQuery);
+//            while (DBM.DB_rs.next()) {
+//                strOutput = "\n   ";
+//                strOutput += DBM.DB_rs.getString("G_no")+"\t|";
+//                strOutput += DBM.DB_rs.getString("home_team")+"\t";
+//                strOutput += DBM.DB_rs.getString("away_team")+"\t";
+//                strOutput += "| "+DBM.DB_rs.getString("result")+"\t|";
+//                strOutput += DBM.DB_rs.getString("game_date")+"|";
+//               
+//                txtSchedule.append(strOutput);
+//            }
+//            DBM.DB_rs.close();
+//        } catch (Exception e) {
+//            System.out.println("SQLException(getDBData) : " + e.getMessage());
+//        }
+//    }
     
     public final void getDBData(String strQuery) {
-        String strOutput = "  고유번호\t  홈팀\t  원정팀\t결과\t        경기일정\n";
-        txtSchedule.setText(strOutput);
+        DefaultTableModel model = (DefaultTableModel)scheduleTable.getModel();
+        int rowcount = model.getRowCount();
+        for(int i = 0; i < rowcount; i++){
+            model.removeRow(0);
+        }
 
         try {
             DBM.DB_rs = DBM.DB_stmt.executeQuery(strQuery);
             while (DBM.DB_rs.next()) {
-                strOutput = "\n   ";
-                strOutput += DBM.DB_rs.getString("G_no")+"\t|";
-                strOutput += DBM.DB_rs.getString("home_team")+"\t";
-                strOutput += DBM.DB_rs.getString("away_team")+"\t";
-                strOutput += "| "+DBM.DB_rs.getString("result")+"\t|";
-                strOutput += DBM.DB_rs.getString("game_date")+"|";
+                ArrayList<String> rowData = new ArrayList<String>();
+                rowData.add(DBM.DB_rs.getString("G_no"));
+                rowData.add(DBM.DB_rs.getString("home_team"));
+                rowData.add(DBM.DB_rs.getString("away_team"));
+                rowData.add(DBM.DB_rs.getString("result"));
+                rowData.add(DBM.DB_rs.getString("game_date"));
                
-                txtSchedule.append(strOutput);
+                model.addRow(rowData.toArray());
             }
             DBM.DB_rs.close();
         } catch (Exception e) {
@@ -208,13 +266,13 @@ public class Schedule extends javax.swing.JFrame {
         try {
             DBM.DB_rs = DBM.DB_stmt.executeQuery(strQuery);
             while (DBM.DB_rs.next()) {
-                comboTeam.addItem(DBM.DB_rs.getString("home_team"));
+                comboTeam.addItem(DBM.DB_rs.getString("team"));
             }
             DBM.DB_rs.close();
             
         } catch (Exception e) {
-            System.out.println("SQLException(getDBData) : " + e.getMessage());
-        }
+            System.out.println("SQLException(getCombobox) : " + e.getMessage());
+        } 
     }
     
     public final String getRadiobtn(){
@@ -268,10 +326,10 @@ public class Schedule extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> comboTeam;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JRadioButton radioFuture;
     private javax.swing.JRadioButton radioPast;
     private javax.swing.JRadioButton radioWhole;
-    private javax.swing.JTextArea txtSchedule;
+    private javax.swing.JTable scheduleTable;
     // End of variables declaration//GEN-END:variables
 }
