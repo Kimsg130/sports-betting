@@ -38,7 +38,6 @@ public class AdminFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(656, 218));
-        setPreferredSize(new java.awt.Dimension(0, 0));
         setResizable(false);
         setSize(new java.awt.Dimension(656, 203));
 
@@ -65,6 +64,11 @@ public class AdminFrame extends javax.swing.JFrame {
         btnUserManager.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         btnUserManager.setText("User Management");
         btnUserManager.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnUserManager.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUserManagerActionPerformed(evt);
+            }
+        });
 
         btnBettingList.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         btnBettingList.setText("Betting List");
@@ -127,6 +131,10 @@ public class AdminFrame extends javax.swing.JFrame {
     private void btnBettingListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBettingListActionPerformed
 
     }//GEN-LAST:event_btnBettingListActionPerformed
+
+    private void btnUserManagerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserManagerActionPerformed
+        new UserManagement().setVisible(true);
+    }//GEN-LAST:event_btnUserManagerActionPerformed
 
     /**
      * @param args the command line arguments
