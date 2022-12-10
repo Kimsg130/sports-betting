@@ -5,6 +5,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.List;
+import java.awt.image.BufferedImage;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -12,6 +15,12 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import javax.swing.ImageIcon;
+import nl.captcha.Captcha;
+import nl.captcha.backgrounds.GradiatedBackgroundProducer;
+import nl.captcha.gimpy.DropShadowGimpyRenderer;
+import nl.captcha.text.producer.NumbersAnswerProducer;
 
 ;
 
@@ -26,6 +35,13 @@ public class SignUp extends javax.swing.JFrame {
     boolean id_is_overlap = true;
     FileFilter filter = new FileNameExtensionFilter("JPEG file", "jpg", "jpeg");
     
+    Captcha captcha = new Captcha.Builder(271, 100)
+            .addText(new NumbersAnswerProducer(5))
+            .addNoise().addBorder()
+            .addBackground(new GradiatedBackgroundProducer())
+            .build();
+    BufferedImage captchaimg = captcha.getImage();
+    String captchaAnswer = captcha.getAnswer();
     /**
      * Creates new form MainFrame
      */
@@ -34,9 +50,10 @@ public class SignUp extends javax.swing.JFrame {
         SignUp.super.getContentPane().setBackground(Color.WHITE);
         lblEnable.setVisible(false);
         lblImagename.setVisible(false);
+        lblCaptchaInvaild.setVisible(false);
         jFileChooser1.setAcceptAllFileFilterUsed(false);
         jFileChooser1.addChoosableFileFilter(filter);
-        
+        lblcaptcha.setIcon(new ImageIcon(captchaimg));
     }
 
     /**
@@ -66,6 +83,10 @@ public class SignUp extends javax.swing.JFrame {
         lblImagename = new javax.swing.JLabel();
         txtPw = new javax.swing.JPasswordField();
         txtPwcheck = new javax.swing.JPasswordField();
+        lblcaptcha = new javax.swing.JLabel();
+        txtAnswer = new javax.swing.JTextField();
+        lblCaptchaInvaild = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("회원가입");
@@ -155,6 +176,24 @@ public class SignUp extends javax.swing.JFrame {
 
         txtPwcheck.setToolTipText("");
 
+        txtAnswer.setText("위에 보이는 문자를 입력해주세요.");
+        txtAnswer.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtAnswerFocusGained(evt);
+            }
+        });
+        txtAnswer.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtAnswerKeyPressed(evt);
+            }
+        });
+
+        lblCaptchaInvaild.setFont(new java.awt.Font("맑은 고딕", 0, 10)); // NOI18N
+        lblCaptchaInvaild.setForeground(new java.awt.Color(255, 0, 0));
+        lblCaptchaInvaild.setText("위에 문자와 다릅니다;;");
+
+        jLabel2.setText("혹시 로봇이신가요?");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -163,7 +202,7 @@ public class SignUp extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(lblImagename, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblImagename, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnSignup, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
@@ -195,8 +234,18 @@ public class SignUp extends javax.swing.JFrame {
                                 .addComponent(btnOverlap)
                                 .addGap(8, 8, 8))))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lblImagepath, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(28, 28, 28)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblImagepath, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(lblcaptcha, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lblCaptchaInvaild)
+                                            .addComponent(txtAnswer, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(jLabel2))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(139, 139, 139)
@@ -233,11 +282,19 @@ public class SignUp extends javax.swing.JFrame {
                     .addComponent(lblName1)
                     .addComponent(btnX))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblImagepath, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
-                .addGap(29, 29, 29)
+                .addComponent(lblImagepath, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addGap(3, 3, 3)
+                .addComponent(lblcaptcha, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtAnswer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(lblCaptchaInvaild)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnSignup, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblImagename, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnSignup, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblImagename, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -306,18 +363,8 @@ public class SignUp extends javax.swing.JFrame {
             strSQL_ui += "'"+user_id+"',";
             strSQL_ui += "'"+user_name+"',";
             strSQL_ui += "'"+user_profile+"');";
-        }
+        }        
         
-//        
-//        String strSQL = "Insert Into user Values(";
-//        strSQL += "'"+user_id+"',";
-//        strSQL += "'"+user_pw+"',";
-//        strSQL += "'"+user_name+"',";
-//        strSQL += "'"+user_profile+"',";
-//        strSQL += "sysdate());";
-//        
-        
-         
         if(id_is_overlap){
             JOptionPane.showMessageDialog(null, "중복확인을 해주세요.");
             return;
@@ -328,6 +375,10 @@ public class SignUp extends javax.swing.JFrame {
         }
         if(user_pw.isEmpty() || user_pwcheck.isEmpty() || user_name.isEmpty()){
             JOptionPane.showMessageDialog(null, "빈칸을 입력해주세요.");
+            return;
+        }
+        if(!txtAnswer.getText().trim().equals(captchaAnswer)){
+            lblCaptchaInvaild.setVisible(true);
             return;
         }
         
@@ -382,6 +433,14 @@ public class SignUp extends javax.swing.JFrame {
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         
     }//GEN-LAST:event_formWindowClosed
+
+    private void txtAnswerKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAnswerKeyPressed
+        lblCaptchaInvaild.setVisible(false);
+    }//GEN-LAST:event_txtAnswerKeyPressed
+
+    private void txtAnswerFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtAnswerFocusGained
+        txtAnswer.setText("");
+    }//GEN-LAST:event_txtAnswerFocusGained
     
     private String pwFieldConverter(char[] c){
         String password = "";
@@ -434,6 +493,8 @@ public class SignUp extends javax.swing.JFrame {
     private javax.swing.JButton btnX;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel lblCaptchaInvaild;
     private javax.swing.JLabel lblEnable;
     private javax.swing.JLabel lblId;
     private javax.swing.JLabel lblImagename;
@@ -442,6 +503,8 @@ public class SignUp extends javax.swing.JFrame {
     private javax.swing.JLabel lblName1;
     private javax.swing.JLabel lblPw;
     private javax.swing.JLabel lblPws;
+    private javax.swing.JLabel lblcaptcha;
+    private javax.swing.JTextField txtAnswer;
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtName;
     private javax.swing.JPasswordField txtPw;

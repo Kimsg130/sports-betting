@@ -48,7 +48,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="lblImagename" min="-2" pref="29" max="-2" attributes="0"/>
+                      <Component id="lblImagename" min="-2" pref="17" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="btnSignup" min="-2" pref="82" max="-2" attributes="0"/>
                   </Group>
@@ -89,8 +89,23 @@
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="lblImagepath" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="lblImagepath" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="103" alignment="0" groupAlignment="1" attributes="0">
+                                      <Component id="lblcaptcha" min="-2" pref="271" max="-2" attributes="0"/>
+                                      <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                                          <Component id="lblCaptchaInvaild" min="-2" max="-2" attributes="0"/>
+                                          <Component id="txtAnswer" min="-2" pref="270" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -137,11 +152,19 @@
                   <Component id="btnX" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="lblImagepath" pref="45" max="32767" attributes="0"/>
-              <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+              <Component id="lblImagepath" min="-2" pref="63" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+              <Component id="lblcaptcha" min="-2" pref="100" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="txtAnswer" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+              <Component id="lblCaptchaInvaild" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="btnSignup" min="-2" pref="35" max="-2" attributes="0"/>
-                  <Component id="lblImagename" min="-2" pref="25" max="-2" attributes="0"/>
+                  <Component id="btnSignup" alignment="1" min="-2" pref="35" max="-2" attributes="0"/>
+                  <Component id="lblImagename" alignment="1" min="-2" pref="25" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -271,6 +294,33 @@
     <Component class="javax.swing.JPasswordField" name="txtPwcheck">
       <Properties>
         <Property name="toolTipText" type="java.lang.String" value=""/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblcaptcha">
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtAnswer">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#xc704;&#xc5d0; &#xbcf4;&#xc774;&#xb294; &#xbb38;&#xc790;&#xb97c; &#xc785;&#xb825;&#xd574;&#xc8fc;&#xc138;&#xc694;."/>
+      </Properties>
+      <Events>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtAnswerFocusGained"/>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtAnswerKeyPressed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblCaptchaInvaild">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="&#xb9d1;&#xc740; &#xace0;&#xb515;" size="10" style="0"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" red="ff" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="&#xc704;&#xc5d0; &#xbb38;&#xc790;&#xc640; &#xb2e4;&#xb985;&#xb2c8;&#xb2e4;;;"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#xd639;&#xc2dc; &#xb85c;&#xbd07;&#xc774;&#xc2e0;&#xac00;&#xc694;?"/>
       </Properties>
     </Component>
   </SubComponents>
