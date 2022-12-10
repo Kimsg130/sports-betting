@@ -36,13 +36,13 @@ public class Login extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
-        txtPw = new javax.swing.JTextField();
         btnLogin = new javax.swing.JButton();
         btnSignup = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         lblId = new javax.swing.JLabel();
         lblPw = new javax.swing.JLabel();
+        txtPw = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("로그인");
@@ -60,12 +60,6 @@ public class Login extends javax.swing.JFrame {
         txtId.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtIdKeyPressed(evt);
-            }
-        });
-
-        txtPw.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtPwKeyPressed(evt);
             }
         });
 
@@ -100,6 +94,12 @@ public class Login extends javax.swing.JFrame {
         lblPw.setForeground(new java.awt.Color(255, 0, 102));
         lblPw.setText("비밀번호가 잘못되었습니다.");
 
+        txtPw.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPwKeyPressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -117,12 +117,11 @@ public class Login extends javax.swing.JFrame {
                             .addComponent(jLabel2)
                             .addComponent(jLabel3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtId)
-                                .addComponent(txtPw, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtId, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
                             .addComponent(lblId)
-                            .addComponent(lblPw))
+                            .addComponent(lblPw)
+                            .addComponent(txtPw))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnLogin)))
                 .addGap(12, 12, 12))
@@ -141,14 +140,14 @@ public class Login extends javax.swing.JFrame {
                                 .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, 0)
                                 .addComponent(lblId)
-                                .addGap(0, 0, 0)
+                                .addGap(3, 3, 3)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(txtPw, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel3)))
+                                    .addComponent(jLabel3)
+                                    .addComponent(txtPw, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, 0)
                         .addComponent(lblPw)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 105, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
                 .addComponent(btnSignup)
                 .addContainerGap())
         );
@@ -162,7 +161,7 @@ public class Login extends javax.swing.JFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         String insertId = txtId.getText().trim();
-        String insertPw = txtPw.getText().trim();
+        String insertPw = pwFieldConverter(txtPw.getPassword());
         String user_name = "기본유저";
         String strSQL = "Select * From user;";
         String strSQL_name = "Select user_name From user_info Where user_id = ";
@@ -186,6 +185,7 @@ public class Login extends javax.swing.JFrame {
                         while(DBM.DB_rs.next()){
                             user_name = DBM.DB_rs.getString("user_name");
                         }
+                        //어드민일때 / 아닐때 나누기
                         JOptionPane.showMessageDialog(null, "환영합니다. "+user_name+"님!");
                         new MainFrame(searchId,user_name).setVisible(true);
                         super.dispose();
@@ -216,18 +216,25 @@ public class Login extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtIdKeyPressed
     
-    private void txtPwKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPwKeyPressed
-        if(evt.getKeyChar() == KeyEvent.VK_ENTER){
-            btnLoginActionPerformed(null);
-        }
-    }//GEN-LAST:event_txtPwKeyPressed
-
     private void btnLoginKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnLoginKeyPressed
         if(evt.getKeyChar() == KeyEvent.VK_ENTER){
             btnLoginActionPerformed(null);
         }
     }//GEN-LAST:event_btnLoginKeyPressed
 
+    private void txtPwKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPwKeyPressed
+        if(evt.getKeyChar() == KeyEvent.VK_ENTER){
+            btnLoginActionPerformed(null);
+        }
+    }//GEN-LAST:event_txtPwKeyPressed
+
+    private String pwFieldConverter(char[] c){
+        String password = "";
+        for(int i=0; i<c.length; i++){
+            password += c[i];
+        }
+        return password;
+    }
     
     /**
      * @param args the command line arguments
@@ -273,6 +280,6 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel lblId;
     private javax.swing.JLabel lblPw;
     private javax.swing.JTextField txtId;
-    private javax.swing.JTextField txtPw;
+    private javax.swing.JPasswordField txtPw;
     // End of variables declaration//GEN-END:variables
 }
