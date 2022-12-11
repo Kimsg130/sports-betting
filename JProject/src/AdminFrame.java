@@ -125,7 +125,7 @@ public class AdminFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGamesManagerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGamesManagerActionPerformed
-
+        new GamesManagement().setVisible(true);
     }//GEN-LAST:event_btnGamesManagerActionPerformed
 
     private void btnBettingListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBettingListActionPerformed
