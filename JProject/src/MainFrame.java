@@ -18,6 +18,7 @@ public class MainFrame extends javax.swing.JFrame {
     DB_MAN DBM = new DB_MAN();
     String strSQL = "Select * From games";
     String strSQL_betting = "Select * From betting";
+    String strSQL_B_no = "Select B_no From betting";
     String user_id = "";
     float winodds, drawodds, loseodds = 0;
 
@@ -28,6 +29,9 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
 
         MainFrame.super.getContentPane().setBackground(Color.WHITE);
+        
+        int B_no = 3;
+        //구매가능 경기들 보여주는 창
         try {
             String strData = null;
             DBM.dbOpen();
@@ -37,6 +41,7 @@ public class MainFrame extends javax.swing.JFrame {
             System.out.println("SQLException : " + e.getMessage());
         }
 
+        //구매한 경기들 보여주는창
         try {
             String strData = null;
             DBM.dbOpen();
@@ -45,11 +50,12 @@ public class MainFrame extends javax.swing.JFrame {
         } catch (Exception e) {
             System.out.println("SQLException : " + e.getMessage());
         }
-        
+
+        //status 바꾸는 로직
         try {
             String strData = null;
             DBM.dbOpen();
-            ChangeStatus(2);
+            ChangeStatus(B_no);
             DBM.dbClose();
         } catch (Exception e) {
             System.out.println("SQLException : " + e.getMessage());
@@ -59,6 +65,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     //상규 : 위에 MainFrame()생성자에 추가한거 있으면 밑에 생성자에도 추가해줘!
     public MainFrame(String user_id, String user_name) {
+        int B_no = 3;
         initComponents();
         MainFrame.super.getContentPane().setBackground(Color.WHITE);
         this.user_id = user_id; // <<------------userid
@@ -80,15 +87,16 @@ public class MainFrame extends javax.swing.JFrame {
         } catch (Exception e) {
             System.out.println("SQLException : " + e.getMessage());
         }
-        
+
         try {
             String strData = null;
             DBM.dbOpen();
-            ChangeStatus(2);
+            ChangeStatus(B_no);
             DBM.dbClose();
         } catch (Exception e) {
             System.out.println("SQLException : " + e.getMessage());
         }
+
     }
 
     /**
@@ -581,7 +589,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         //포인트 충전 화면
-        
+
         txtChargePoint.setText("10000");
         String strSQL2 = "SELECT point FROM user_info where user_id = '" + user_id + "'";
         try {
@@ -765,6 +773,7 @@ public class MainFrame extends javax.swing.JFrame {
                 user_choice = DBM.DB_rs.getString("user_choice");
             }
             DBM.DB_rs.close();
+
         } catch (Exception e) {
             System.out.println("SQLException : " + e.getMessage());
         }
@@ -776,6 +785,7 @@ public class MainFrame extends javax.swing.JFrame {
                 result = DBM.DB_rs.getString("result");
             }
             DBM.DB_rs.close();
+
         } catch (Exception e) {
             System.out.println("SQLException : " + e.getMessage());
         }
@@ -784,7 +794,7 @@ public class MainFrame extends javax.swing.JFrame {
             status = "적중";
         } else if (result.equals("진행예정")) {
             status = "예정";
-        } else if (user_choice.equals(result)) {
+        } else if (user_choice.equals(result) == false) {
             status = "적중 안됨";
         }
 
@@ -792,9 +802,9 @@ public class MainFrame extends javax.swing.JFrame {
         strSQL2 += "status = '" + status + "'";
         strSQL2 += " WHERE B_no ='" + B_no + "'";
         try {
-            DBM.dbOpen();
+
             DBM.DB_stmt.executeUpdate(strSQL2);
-            DBM.dbClose();
+
         } catch (Exception e) {
             System.out.println("SQLException : " + e.getMessage());
         }
