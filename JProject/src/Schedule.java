@@ -112,9 +112,7 @@ public class Schedule extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        scheduleTable.setCellSelectionEnabled(true);
         scheduleTable.setGridColor(new java.awt.Color(204, 204, 204));
-        scheduleTable.setSelectionBackground(new java.awt.Color(255, 255, 255));
         jScrollPane2.setViewportView(scheduleTable);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

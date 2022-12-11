@@ -129,7 +129,7 @@ public class AdminFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnGamesManagerActionPerformed
 
     private void btnBettingListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBettingListActionPerformed
-
+        new BettingList().setVisible(true);
     }//GEN-LAST:event_btnBettingListActionPerformed
 
     private void btnUserManagerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserManagerActionPerformed
