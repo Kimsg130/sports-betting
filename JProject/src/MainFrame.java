@@ -29,7 +29,7 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
 
         MainFrame.super.getContentPane().setBackground(Color.WHITE);
-        
+
         int B_no = 3;
         //구매가능 경기들 보여주는 창
         try {
@@ -343,6 +343,11 @@ public class MainFrame extends javax.swing.JFrame {
         jScrollPane2.setViewportView(jTextArea2);
 
         jButton5.setText("환급받기");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         jLabel6.setText("배팅 기록");
 
@@ -354,13 +359,13 @@ public class MainFrame extends javax.swing.JFrame {
             jDialog4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jDialog4Layout.createSequentialGroup()
                 .addGap(17, 17, 17)
-                .addGroup(jDialog4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jDialog4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jDialog4Layout.createSequentialGroup()
                         .addComponent(jLabel6)
-                        .addGap(218, 218, 218)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblSumPoint)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(41, 41, 41)
                         .addComponent(jButton5)))
                 .addContainerGap(17, Short.MAX_VALUE))
         );
@@ -623,6 +628,38 @@ public class MainFrame extends javax.swing.JFrame {
         jDialog4.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        int now_point = 0;
+        float SumPoint_f = Float.parseFloat(lblSumPoint.getText());
+        int SumPoint = Math.round(SumPoint_f);
+        String strSQL1 = "SELECT point FROM user_info where user_id = '" + user_id + "'";
+        try {
+            DBM.dbOpen();
+            DBM.DB_rs = DBM.DB_stmt.executeQuery(strSQL1);
+
+            while (DBM.DB_rs.next()) {
+               now_point = DBM.DB_rs.getInt("point");                
+            }
+            DBM.DB_rs.close();
+        } catch (Exception e) {
+            System.out.println("SQLException : " + e.getMessage());
+        }
+         
+        int ChargePoint = now_point + SumPoint;
+        String strSQL2 = "Update user_info Set ";
+        strSQL2 += "point = '" + ChargePoint + "'";
+        strSQL2 += " WHERE user_id ='" + user_id + "'";
+        try {
+            DBM.dbOpen();
+            DBM.DB_stmt.executeUpdate(strSQL2);
+            DBM.dbClose();
+            JOptionPane.showMessageDialog(null, SumPoint + "원 환급받으셨습니다.");
+        } catch (Exception e) {
+            System.out.println("SQLException : " + e.getMessage());
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
+
     public final void getDBData(String strQuery) {
         String strOutput = "고유번호\t홈팀\t원정팀\t경기일정\n";
         jTextArea1.setText(strOutput);
@@ -671,7 +708,8 @@ public class MainFrame extends javax.swing.JFrame {
                     strOutput += result_point;
                 }
                 jTextArea2.append(strOutput);
-                lblSumPoint.setText("총 " + sum_result_point);
+                String sum_result_point_s = Float.toString(sum_result_point);
+                lblSumPoint.setText(sum_result_point_s);
             }
             DBM.DB_rs.close();
         } catch (Exception e) {
