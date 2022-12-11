@@ -418,6 +418,9 @@ public class GamesManagement extends javax.swing.JFrame {
                                + "SET result = '"+changingResult+"', win_odds = '"+changingWin+"', draw_odds = '"+changingDraw+"', lose_odds = '"+changingLose+"' "
                                + "WHERE G_no = "+changingNo+";";
             DBM.DB_stmt.executeUpdate(updateQuery);
+            
+            updateBetting(changingNo, changingWin, changingDraw, changingLose);
+                    
             reFreshTable();
             DBM.DB_rs.close();
             DBM.dbClose();
@@ -545,6 +548,39 @@ public class GamesManagement extends javax.swing.JFrame {
             txtLose.setText(lose_odds);
         }
     }
+    
+    private void updateBetting(String g_no, Double cWin, Double cDraw, Double cLose){
+        String strQuery = "SELECT B_no, user_choice FROM betting WHERE status = '예정' AND G_no = "+g_no+";";
+        try {
+            DBM.DB_rs = DBM.DB_stmt.executeQuery(strQuery);
+            ArrayList<String[]> arr = new ArrayList<String[]>();
+            
+            while(DBM.DB_rs.next()){
+                String b_no = DBM.DB_rs.getString("B_no");
+                String choice = DBM.DB_rs.getString("user_choice");
+                
+                String[] sarray = {b_no, choice};
+                arr.add(sarray);
+            }
+            String updateQuery = "UPDATE betting ";
+            for (String[] s : arr){
+                if(s[1].equals("승")){
+                    updateQuery += "SET odds = '"+cWin+"' ";
+                }else if(s[1].equals("무")){
+                    updateQuery += "SET odds = '"+cDraw+"' ";
+                }else{
+                    updateQuery += "SET odds = '"+cLose+"' ";
+                }
+                updateQuery += "WHERE G_no = "+g_no+" AND status = '예정';";
+                DBM.DB_stmt.executeUpdate(updateQuery);
+            }
+        
+        } catch (Exception e) {
+            System.out.println("bettingUpdate : "+e);
+            JOptionPane.showMessageDialog(null, "예기치 못한 오류가 발생했습니다.");
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
